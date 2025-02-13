@@ -1,87 +1,135 @@
-# Developer Evaluation Project
+# Ambev Developer Evaluation
 
-`READ CAREFULLY`
+## 📌 Visão Geral
+Este projeto é uma API desenvolvida para avaliação técnica, utilizando **.NET 8**, **PostgreSQL**, **MongoDB** e **Redis**.
 
-## Instructions
-**The test below will have up to 7 calendar days to be delivered from the date of receipt of this manual.**
+## 🛠️ Tecnologias Utilizadas
+- **.NET 8**
+- **Entity Framework Core**
+- **PostgreSQL**
+- **MongoDB**
+- **Redis**
+- **Docker e Docker Compose**
+- **Swagger**
 
-- The code must be versioned in a public Github repository and a link must be sent for evaluation once completed
-- Upload this template to your repository and start working from it
-- Read the instructions carefully and make sure all requirements are being addressed
-- The repository must provide instructions on how to configure, execute and test the project
-- Documentation and overall organization will also be taken into consideration
+## 🚀 Configuração do Ambiente
+### 1️⃣ **Pré-requisitos**
+Antes de começar, certifique-se de ter instalado:
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [.NET SDK 8.0+](https://dotnet.microsoft.com/download/dotnet/8.0)
+- [PostgreSQL](https://www.postgresql.org/download/)
 
-## Use Case
-**You are a developer on the DeveloperStore team. Now we need to implement the API prototypes.**
+### 2️⃣ **Clonar o Repositório**
+```sh
+git clone https://github.com/seu-usuario/seu-repositorio.git
+cd seu-repositorio
+```
 
-As we work with `DDD`, to reference entities from other domains, we use the `External Identities` pattern with denormalization of entity descriptions.
+### 3️⃣ **Configurar o Banco de Dados**
+O banco de dados roda em um container Docker. Para subir os serviços necessários:
+```sh
+docker-compose up -d
+```
+Isso iniciará **PostgreSQL, MongoDB e Redis**.
 
-Therefore, you will write an API (complete CRUD) that handles sales records. The API needs to be able to inform:
+### 4️⃣ **Aplicar Migrations no PostgreSQL**
+```sh
+cd template/backend/src/Ambev.DeveloperEvaluation.WebApi
 
-* Sale number
-* Date when the sale was made
-* Customer
-* Total sale amount
-* Branch where the sale was made
-* Products
-* Quantities
-* Unit prices
-* Discounts
-* Total amount for each item
-* Cancelled/Not Cancelled
+dotnet ef database update
+```
+Caso o comando `dotnet ef` não funcione, instale a ferramenta:
+```sh
+dotnet tool install --global dotnet-ef
+```
 
-It's not mandatory, but it would be a differential to build code for publishing events of:
-* SaleCreated
-* SaleModified
-* SaleCancelled
-* ItemCancelled
+### 5️⃣ **Rodar a Aplicação**
+Agora, podemos iniciar o servidor:
+```sh
+dotnet run
+```
+Se tudo estiver correto, a API estará rodando em:
+🔗 **http://localhost:5119/swagger**
 
-If you write the code, **it's not required** to actually publish to any Message Broker. You can log a message in the application log or however you find most convenient.
+---
 
-### Business Rules
+## 📢 Testando os Endpoints
+A API conta com uma interface **Swagger** disponível em:
+🔗 **[http://localhost:5119/swagger](http://localhost:5119/swagger)**
 
-* Purchases above 4 identical items have a 10% discount
-* Purchases between 10 and 20 identical items have a 20% discount
-* It's not possible to sell above 20 identical items
-* Purchases below 4 items cannot have a discount
+### 🏷️ Criar um Usuário
+```
+POST /api/Users
+```
+```json
+{
+  "name": "João da Silva",
+  "email": "joao.silva@email.com",
+  "password": "senha123"
+}
+```
 
-These business rules define quantity-based discounting tiers and limitations:
+### 🔑 Autenticação
+```
+POST /api/Auth
+```
+```json
+{
+  "email": "joao.silva@email.com",
+  "password": "senha123"
+}
+```
+O retorno será um `token JWT`.
 
-1. Discount Tiers:
-   - 4+ items: 10% discount
-   - 10-20 items: 20% discount
+### 🛒 Criar uma Venda
+```
+POST /api/Sales
+```
+```json
+{
+  "saleNumber": "123456",
+  "saleDate": "2025-02-13T14:30:00",
+  "customer": "João da Silva",
+  "branch": "São Paulo",
+  "items": [
+    {
+      "productName": "Cerveja Pilsen",
+      "quantity": 5,
+      "unitPrice": 10.00
+    }
+  ]
+}
+```
 
-2. Restrictions:
-   - Maximum limit: 20 items per product
-   - No discounts allowed for quantities below 4 items
+### 📊 Listar Vendas
+```
+GET /api/Sales
+```
 
-## Overview
-This section provides a high-level overview of the project and the various skills and competencies it aims to assess for developer candidates. 
+### 🔎 Buscar Venda Específica
+```
+GET /api/Sales/{id}
+```
 
-See [Overview](/.doc/overview.md)
+### ❌ Excluir Venda
+```
+DELETE /api/Sales/{id}
+```
 
-## Tech Stack
-This section lists the key technologies used in the project, including the backend, testing, frontend, and database components. 
+---
 
-See [Tech Stack](/.doc/tech-stack.md)
+## 📌 **Parando e Removendo os Containers**
+Caso precise parar os serviços:
+```sh
+docker-compose down
+```
+Para limpar os volumes do banco de dados:
+```sh
+docker-compose down -v
+```
 
-## Frameworks
-This section outlines the frameworks and libraries that are leveraged in the project to enhance development productivity and maintainability. 
+---
 
-See [Frameworks](/.doc/frameworks.md)
-
-<!-- 
-## API Structure
-This section includes links to the detailed documentation for the different API resources:
-- [API General](./docs/general-api.md)
-- [Products API](/.doc/products-api.md)
-- [Carts API](/.doc/carts-api.md)
-- [Users API](/.doc/users-api.md)
-- [Auth API](/.doc/auth-api.md)
--->
-
-## Project Structure
-This section describes the overall structure and organization of the project files and directories. 
-
-See [Project Structure](/.doc/project-structure.md)
->>>>>>> 1504c76 (primeiro commit do desafio)
+## 🎯 Conclusão
+Se todos os endpoints responderem corretamente, significa que a API está funcional! Caso tenha dúvidas ou precise de ajustes, me avise. 🚀🔥
