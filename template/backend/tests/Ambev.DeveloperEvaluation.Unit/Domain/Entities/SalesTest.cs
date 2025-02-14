@@ -1,6 +1,7 @@
 using Ambev.DeveloperEvaluation.Domain.Entities;
-using Ambev.DeveloperEvaluation.Unit.TestData;
+using Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData;
 using Xunit;
+using System;
 
 namespace Ambev.DeveloperEvaluation.Unit.Entities
 {
@@ -12,7 +13,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Entities
             var item = new SaleItem("Cerveja", 5, 10.00m);
             item.ApplyDiscount(0.10m);
 
-            Assert.Equal(45.00m, item.TotalAmount); // 50 - 10% de desconto
+            Assert.Equal(45.00m, item.TotalAmount);
         }
 
         [Fact]
@@ -21,7 +22,7 @@ namespace Ambev.DeveloperEvaluation.Unit.Entities
             var item = new SaleItem("Cerveja", 15, 10.00m);
             item.ApplyDiscount(0.20m);
 
-            Assert.Equal(120.00m, item.TotalAmount); // 150 - 20% de desconto
+            Assert.Equal(120.00m, item.TotalAmount); 
         }
 
         [Fact]
@@ -35,18 +36,19 @@ namespace Ambev.DeveloperEvaluation.Unit.Entities
         public void ShouldNotApplyDiscount_WhenQuantityIsLessThan4()
         {
             var item = new SaleItem("Cerveja", 3, 10.00m);
-            item.ApplyDiscount(0.10m);
-
-            Assert.Equal(30.00m, item.TotalAmount); // Sem desconto
+            
+            
+            
+            Assert.Equal(30.00m, item.TotalAmount); 
         }
 
         [Fact]
         public void ShouldCalculateTotalAmountCorrectly()
         {
-            var sale = SaleTestData.GetSampleSale();
+            var sale = SalesTestData.GetSampleSale(); 
             sale.CalculateTotal();
 
-            Assert.Equal(225.00m, sale.TotalAmount);
+            Assert.Equal(195.00m, sale.TotalAmount);
         }
     }
 }

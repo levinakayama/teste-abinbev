@@ -38,8 +38,9 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             IsCancelled = true;
         }
 
-        private void CalculateTotal()
+        public void CalculateTotal()
         {
+            ApplyDiscounts();
             TotalAmount = Items.Sum(item => item.TotalAmount);
         }
 
@@ -49,11 +50,11 @@ namespace Ambev.DeveloperEvaluation.Domain.Entities
             {
                 if (item.Quantity >= 10 && item.Quantity <= 20)
                 {
-                    item.ApplyDiscount(0.20m); // 20% de desconto
+                    item.ApplyDiscount(0.20m); 
                 }
                 else if (item.Quantity >= 4)
                 {
-                    item.ApplyDiscount(0.10m); // 10% de desconto
+                    item.ApplyDiscount(0.10m); 
                 }
                 else
                 {

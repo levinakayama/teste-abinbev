@@ -1,21 +1,20 @@
-using Ambev.DeveloperEvaluation.Domain.Entities;
 using System;
-using System.Collections.Generic;
+using Ambev.DeveloperEvaluation.Domain.Entities;
 
-namespace Ambev.DeveloperEvaluation.Unit.TestData
+namespace Ambev.DeveloperEvaluation.Unit.Domain.Entities.TestData
 {
-    public static class SaleTestData
+    public static class SalesTestData
     {
-        public static Sale GetSampleSale()
-        {
-            return new Sale("123456", DateTime.Now, "Cliente Teste", "São Paulo")
-            {
-                Items = new List<SaleItem>
-                {
-                    new SaleItem("Cerveja Pilsen", 5, 10.00m),
-                    new SaleItem("Cerveja Lager", 12, 15.00m)
-                }
-            };
-        }
+       public static Sale GetSampleSale()
+{
+    var sale = new Sale("123456", DateTime.Now, "Cliente Teste", "Filial SP");
+
+    
+    sale.AddItem(new SaleItem("Cerveja Pilsen", 5, 10.00m)); 
+    sale.AddItem(new SaleItem("Cerveja Stout", 10, 15.00m)); 
+    sale.AddItem(new SaleItem("Cerveja Lager", 3, 10.00m));  
+
+    return sale;
+}
     }
 }
